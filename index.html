@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        body{
+            min-height: 100vh;
+            background: #efb4b4;
+            padding: 12px; 
+        }
+
+        
+        section{
+            width: 100%;
+            max-width: 800px; 
+            margin: 20px auto; 
+        }
+
+        .search-bar{
+            display: grid;
+            width: 100%;
+            gap: 12px;
+            grid-template-columns: 1fr auto; 
+            padding: 24px;
+            border-radius: 16px;
+            background: #99ac8b;
+            height: auto;
+            align-items: center;
+        }
+        
+        .search{
+            width: 100%;
+            height: 40px; 
+            border-radius: 8px;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .cari-data{
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            background: #7358b1;
+            color: white;
+            font-size: 14px;
+            padding: 0 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cari-data:hover{
+           background: #4c4263; 
+        }
+
+        .tampil-data{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        
+        .item{
+            width: 100%;
+            display: grid;
+            gap: 4px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .item-img{
+            width: 100%;
+            display: flex; 
+        }
+
+        .item-img img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0; 
+        }
+
+        .item-name{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 12px;
+            background: white;
+            color: black;
+            font-size: 16px;
+            font-weight: bold;
+            min-height: 50px;
+        }
+
+        @media (max-width: 600px) {
+            .tampil-data {
+                grid-template-columns: 1fr;
+            }
+            .search-bar {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <form class="search-bar">
+            <input type="text" class="search" placeholder="Cari Data disini">
+            <button class="cari-data" type="button">Cari Data</button>
+        </form>
+    </section>
+
+    <section class="tampil-data">
+        <!-- <div class="item">
+            <div class="item-img">
+                <img src="https://rickandmortyapi.com/api/character/avatar/1.jpeg" alt="Rick Sanchez">
+            </div>
+            <div class="item-name">
+                Rick Sanchez
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-img">
+                <img src="https://rickandmortyapi.com/api/character/avatar/2.jpeg" alt="Morty Smith">
+            </div>
+            <div class="item-name">
+                Morty Smith
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-img">
+                <img src="https://rickandmortyapi.com/api/character/avatar/3.jpeg" alt="Summer Smith">
+            </div>
+            <div class="item-name">
+                Summer Smith
+            </div>
+        </div> -->
+    </section>
+
+    <script>
+        const divData = document.querySelector(".tampil-data")
+        const btnSearch = document.querySelector(".cari-data")
+        const inputSearch = document.querySelector('.search')
+
+        let dataArrayAll = []
+
+        function createContent(name, url){
+            const divItem = document.createElement('div')
+            divItem.classList.add('item')
+
+            const divItemName = document.createElement('div')
+            divItemName.classList.add('item-name')
+            divItemName.innerText = name
+
+            const divImage = document.createElement('div')
+            divImage.classList.add('item-img')
+
+            const imgData = document.createElement('img')
+            imgData.alt = name
+            imgData.src = url
+
+            divImage.append(imgData)
+            divItem.append(divItemName)
+            divItem.append(divImage)
+            return divItem
+        }
+
+        async function getData(){
+
+            const url = 'https://rickandmortyapi.com/api/character'
+            const getData = await fetch(url)
+            const dataJson = await getData.json()
+            dataArrayAll = dataJson.results
+            displayData(dataArrayAll)
+        }
+
+        function displayData(dataArray){
+            divData.innerHTML = '';
+
+            dataArray.forEach((data) =>{
+                const dataAll = createContent(data.name, data.image)
+                divData.append(dataAll)
+            })
+
+        }
+
+        function filterData() {
+            const keyword = inputSearch.value.toLowerCase().trim();
+            const hasilFilter = dataArrayAll.filter((karakter) => {
+                return karakter.name.toLowerCase().includes(keyword);
+            });
+            displayData(hasilFilter);
+        }
+
+        btnSearch.addEventListener('click', filterData);
+
+        getData()
+    </script>
+</body>
+</html>
