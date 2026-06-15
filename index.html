@@ -1,45 +1,47 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: Arial, Helvetica, sans-serif;
         }
-        body{
+
+        body {
             min-height: 100vh;
             background: #efb4b4;
-            padding: 12px; 
+            padding: 12px;
         }
 
-        
-        section{
+
+        section {
             width: 100%;
-            max-width: 800px; 
-            margin: 20px auto; 
+            max-width: 800px;
+            margin: 20px auto;
         }
 
-        .search-bar{
+        .search-bar {
             display: grid;
             width: 100%;
             gap: 12px;
-            grid-template-columns: 1fr auto; 
+            grid-template-columns: 1fr auto;
             padding: 24px;
             border-radius: 16px;
             background: #99ac8b;
             height: auto;
             align-items: center;
         }
-        
-        .search{
+
+        .search {
             width: 100%;
-            height: 40px; 
+            height: 40px;
             border-radius: 8px;
             border: none;
             padding: 12px;
@@ -47,7 +49,7 @@
             font-weight: 500;
         }
 
-        .cari-data{
+        .cari-data {
             height: 40px;
             border: none;
             border-radius: 8px;
@@ -59,17 +61,17 @@
             font-weight: bold;
         }
 
-        .cari-data:hover{
-           background: #4c4263; 
+        .cari-data:hover {
+            background: #4c4263;
         }
 
-        .tampil-data{
+        .tampil-data {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 16px;
         }
-        
-        .item{
+
+        .item {
             width: 100%;
             display: grid;
             gap: 4px;
@@ -78,19 +80,19 @@
             overflow: hidden;
         }
 
-        .item-img{
+        .item-img {
             width: 100%;
-            display: flex; 
+            display: flex;
         }
 
         .item-img img {
             width: 100%;
             height: auto;
             object-fit: cover;
-            border-radius: 8px 8px 0 0; 
+            border-radius: 8px 8px 0 0;
         }
 
-        .item-name{
+        .item-name {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -107,17 +109,19 @@
             .tampil-data {
                 grid-template-columns: 1fr;
             }
+
             .search-bar {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
     <section>
         <form class="search-bar">
-            <input type="text" class="search" placeholder="Cari Data disini">
-            <button class="cari-data" type="button">Cari Data</button>
+            <input type="text" class="search" placeholder="Cari Data disini" />
+            <button id="cari-data" class="cari-data" type="button">Cari Data</button>
         </form>
     </section>
 
@@ -149,13 +153,13 @@
     </section>
 
     <script>
-        const divData = document.querySelector(".tampil-data")
-        const btnSearch = document.querySelector(".cari-data")
+        const divData = document.getElementsByTagName('section')[1]
+        const btnSearch = document.getElementById("cari-data")
         const inputSearch = document.querySelector('.search')
 
         let dataArrayAll = []
 
-        function createContent(name, url){
+        function createContent(name, url) {
             const divItem = document.createElement('div')
             divItem.classList.add('item')
 
@@ -170,13 +174,13 @@
             imgData.alt = name
             imgData.src = url
 
-            divImage.append(imgData)
+            divImage.prepend(imgData)
             divItem.append(divItemName)
             divItem.append(divImage)
             return divItem
         }
 
-        async function getData(){
+        async function getData() {
 
             const url = 'https://rickandmortyapi.com/api/character'
             const getData = await fetch(url)
@@ -185,12 +189,12 @@
             displayData(dataArrayAll)
         }
 
-        function displayData(dataArray){
+        function displayData(dataArray) {
             divData.innerHTML = '';
 
-            dataArray.forEach((data) =>{
+            dataArray.forEach((data) => {
                 const dataAll = createContent(data.name, data.image)
-                divData.append(dataAll)
+                divData.appendChild(dataAll)
             })
 
         }
@@ -208,4 +212,5 @@
         getData()
     </script>
 </body>
+
 </html>
